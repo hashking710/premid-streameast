@@ -453,15 +453,33 @@ async function update(): Promise<void> {
       largeImageText: 'StreamEast'
     };
   } else {
-    const match = parseStreamPage() || findLiveMatchOnHomePage();
-    data = match
-      ? await buildPresenceData(match, settings)
-      : {
+    const match = parseStreamPage();
+    if (match) {
+      data = await buildPresenceData(match, settings);
+    } else {
+      // Check whether the URL identifies a sport category page (e.g. /mlb-streams/, /soccer/).
+      // If so, show a browsing state for that sport rather than picking up a
+      // listing card as if it were the active match.
+      const categoryLeague = parseSupportedLeague(location.pathname);
+      if (categoryLeague) {
+        data = {
+          type: ActivityType.Watching,
+          details: `Browsing ${categoryLeague}`,
+          state: 'Viewing match listings',
+          largeImageUrl: getSportAssetUrl(categoryLeague),
+          largeImageText: categoryLeague,
+          smallImageUrl: STREAMEAST_LOGO_URL,
+          smallImageText: 'StreamEast'
+        };
+      } else {
+        data = {
           type: ActivityType.Watching,
           details: 'Browsing StreamEast',
           largeImageUrl: STREAMEAST_LOGO_URL,
           largeImageText: 'StreamEast'
         };
+      }
+    }
   }
 
   const key = JSON.stringify(data);
