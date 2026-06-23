@@ -35,6 +35,9 @@ interface Settings {
   hideScores: boolean;
 }
 
+const ASSET_BASE = 'https://raw.githubusercontent.com/hashking710/premid-streameast/main/streameast-activity/assets';
+const STREAMEAST_LOGO_URL = `${ASSET_BASE}/streameast-removebg-preview.png`;
+
 const leagueSportAssets: Record<string, string> = {
   'MLB': 'streameast_baseball',
   'NBA': 'streameast_basketball',
@@ -49,8 +52,9 @@ const leagueSportAssets: Record<string, string> = {
   'F1': 'streameast_racing'
 };
 
-function getSportAssetKey(league?: string): string {
-  return (league && leagueSportAssets[league]) || 'streameast';
+function getSportAssetUrl(league?: string): string {
+  const key = league && leagueSportAssets[league];
+  return key ? `${ASSET_BASE}/${key}.png` : STREAMEAST_LOGO_URL;
 }
 
 // TheSportsDB (free public key '3') is used as the primary team logo source.
@@ -383,7 +387,7 @@ function findLiveMatchOnHomePage(): MatchInfo | null {
 
 async function buildPresenceData(match: MatchInfo, settings: Settings): Promise<PresenceData> {
   const title = match.awayTeam ? `${match.homeTeam} vs ${match.awayTeam}` : match.homeTeam;
-  const sportKey = getSportAssetKey(match.league);
+  const sportAssetUrl = getSportAssetUrl(match.league);
   const stateParts: string[] = [];
 
   if (match.league) stateParts.push(match.league);
@@ -395,10 +399,10 @@ async function buildPresenceData(match: MatchInfo, settings: Settings): Promise<
   const data: PresenceData = {
     type: ActivityType.Watching,
     details: title,
-    state: stateParts.join(' · '),
-    largeImageKey: sportKey,
+    state: stateParts.join(' \u00B7 '),
+    largeImageUrl: sportAssetUrl,
     largeImageText: title,
-    smallImageKey: 'streameast',
+    smallImageUrl: STREAMEAST_LOGO_URL,
     smallImageText: match.league || 'StreamEast',
     startTimestamp: match.startTimestamp,
     buttons: [{ label: 'Watch on StreamEast', url: match.url || location.href }]
@@ -435,7 +439,7 @@ async function update(): Promise<void> {
     data = {
       type: ActivityType.Watching,
       details: 'Watching StreamEast',
-      largeImageKey: 'streameast',
+      largeImageUrl: STREAMEAST_LOGO_URL,
       largeImageText: 'StreamEast'
     };
   } else if (location.pathname === '/' || location.pathname === '') {
@@ -445,7 +449,7 @@ async function update(): Promise<void> {
       type: ActivityType.Watching,
       details: 'Browsing StreamEast',
       state: 'On the home page',
-      largeImageKey: 'streameast',
+      largeImageUrl: STREAMEAST_LOGO_URL,
       largeImageText: 'StreamEast'
     };
   } else {
@@ -455,7 +459,7 @@ async function update(): Promise<void> {
       : {
           type: ActivityType.Watching,
           details: 'Browsing StreamEast',
-          largeImageKey: 'streameast',
+          largeImageUrl: STREAMEAST_LOGO_URL,
           largeImageText: 'StreamEast'
         };
   }
@@ -473,7 +477,7 @@ presence.on('UpdateData', () => {
     presence.setActivity({
       type: ActivityType.Watching,
       details: 'Browsing StreamEast',
-      largeImageKey: 'streameast',
+      largeImageUrl: STREAMEAST_LOGO_URL,
       largeImageText: 'StreamEast'
     });
   });
