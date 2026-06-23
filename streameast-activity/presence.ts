@@ -7,6 +7,16 @@ import {
   parseSupportedLeague
 } from './utils';
 
+// Defined here (not in premid-globals.d.ts) so esbuild emits numeric literals
+// rather than runtime references to an undefined global.
+const ActivityType = {
+  Playing: 0,
+  Streaming: 1,
+  Listening: 2,
+  Watching: 3,
+  Competing: 5,
+} as const;
+
 const presence = new Presence({ clientId: '1441489442484256961' });
 
 interface MatchInfo {

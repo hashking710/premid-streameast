@@ -1,13 +1,9 @@
 // Ambient declarations for globals injected by the PreMiD extension at runtime.
 // These are NOT imported — Presence is a global available in the extension context.
-
-declare enum ActivityType {
-  Playing = 0,
-  Streaming = 1,
-  Listening = 2,
-  Watching = 3,
-  Competing = 5
-}
+//
+// ActivityType is NOT declared here — it is defined as a plain const object in
+// presence.ts so that esbuild emits the numeric literals instead of runtime
+// references to a non-existent global.
 
 interface PresenceData {
   type?: ActivityType;
