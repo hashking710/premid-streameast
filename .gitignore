@@ -1,0 +1,55 @@
+# ── Node ──────────────────────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnp/
+.pnp.js
+.yarn/
+
+# ── Build output ──────────────────────────────────────────────────────────────
+dist/
+out/
+build/
+*.zip
+*.tgz
+*.tar.gz
+
+# ── Staging / tooling artefacts ───────────────────────────────────────────────
+.build-staging/
+.test-zip/
+coverage/
+*.lcov
+.nyc_output/
+
+# ── TypeScript ────────────────────────────────────────────────────────────────
+*.tsbuildinfo
+
+# ── Environment / secrets ─────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── OS & editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.suo
+*.user
+*.sln.docstates
+*.swp
+*.swo
+*~
+
+# ── AI assistant config ───────────────────────────────────────────────────────
+.claude/
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+logs/
+*.log
+
+# ── Saved HTML snapshots (large, not needed in source control) ────────────────
+Example Pages/
